@@ -11,6 +11,7 @@ import pandas as pd
 import os
 import string
 import re
+import requests
 
 def lemmatizer_func(input):
 
@@ -53,68 +54,68 @@ df['similarity'] = None
 for index, row in df.iterrows():
     id_ = row['id']
     caption = row['caption']
+    image_url = row['image']
+    
+    
+    # Fetch the image data
+    response = requests.get(image_url)
+    
 
     # Create a full path to the text file
-    image_path = (f"downloaded_images/{id_}.png")
+    image_path = (response.content)
 
     # Check if text file exists
-    if os.path.exists(image_path):
-        # Read the text file into a variable
-        
 
-        # Print the id, text content, and caption
+    # Read the text file into a variable
+    
 
-
+    # Print the id, text content, and caption
 
 
-        # Perform OCR to extract text
-        extracted_text = ocr_image(image_path)
 
 
+    # Perform OCR to extract text
+    extracted_text = ocr_image(image_path)
 
 
 
 
 
 
-        # Tokenize the sentence into words
-
-        caption = lemmatizer_func(caption)
 
 
+    # Tokenize the sentence into words
 
-        extracted_text = lemmatizer_func(extracted_text)
-
-        #####################
-
-
-        # Calculate similarity
-        similarity = text_similarity(extracted_text, caption)
-
-        # Classification based on 60% cutoff
-        classification = 1 if similarity >= 0.6 else 0
-        # Read the CSV into a DataFrame
-        # Add a new column with default values (if needed)
-        
-
-        df.at[index, 'similarity'] = similarity  # Update the value in the 'new_category' column
-
-        # Save the DataFrame back to the same CSV file (or a new one)
-        df.to_csv('your_updated_file.csv', index=False)  # Replace 'your_updated_file.csv' with the name you'd like to give to the updated CSV file
+    caption = lemmatizer_func(caption)
 
 
 
-        print(f"Extracted Text: {extracted_text}")
-        print(f"Caption: {caption}")
-        print(f"Similarity: {similarity}")
-        print(f"Classification: {classification}")
-        print(f"ID: {id_}")
-        # print(f"Text Content: {text_content}")
-        print(f"Caption: {caption}")
-        print("=" * 50)
-    else:
-        print(f"Text file with ID {id_} does not exist.")
+    extracted_text = lemmatizer_func(extracted_text)
+
+    #####################
+
+
+    # Calculate similarity
+    similarity = text_similarity(extracted_text, caption)
+
+    # Classification based on 60% cutoff
+    classification = 1 if similarity >= 0.6 else 0
+    # Read the CSV into a DataFrame
+    # Add a new column with default values (if needed)
+    
+
+    df.at[index, 'similarity'] = similarity  # Update the value in the 'new_category' column
+
+    # Save the DataFrame back to the same CSV file (or a new one)
+    df.to_csv('your_new_file.csv', index=False)  # Replace 'your_updated_file.csv' with the name you'd like to give to the updated CSV file
 
 
 
-
+    print(f"Extracted Text: {extracted_text}")
+    print(f"Caption: {caption}")
+    print(f"Similarity: {similarity}")
+    print(f"Classification: {classification}")
+    print(f"ID: {id_}")
+    # print(f"Text Content: {text_content}")
+    print(f"Caption: {caption}")
+    print("=" * 50)

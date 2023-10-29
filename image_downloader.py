@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Read the CSV file into a DataFrame
-df = pd.read_csv("csvs/test.csv")
+df = pd.read_csv("csvs/train.csv")
 
 # Create a directory to store the downloaded images
 os.makedirs("downloaded_images", exist_ok=True)
@@ -12,7 +12,9 @@ os.makedirs("downloaded_images", exist_ok=True)
 for index, row in df.iterrows():
     image_url = row['image']
     image_id = row['id']
-    
+    if os.path.exists(f"downloaded_images/{image_id}.png"):
+        print(f"Image with ID {image_id} already exists. Skipping download.")
+        continue
     # Fetch the image data
     response = requests.get(image_url)
     
