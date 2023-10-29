@@ -92,13 +92,13 @@ for index, row in df.iterrows():
         similarity = text_similarity(extracted_text, caption)
 
         # Classification based on 60% cutoff
-        classification = 1 if similarity >= 0.6 else 0
+        classification = 1 if similarity >= 0.2 else 0
         # Read the CSV into a DataFrame
         # Add a new column with default values (if needed)
         
 
         df.at[index, 'similarity'] = similarity  # Update the value in the 'new_category' column
-
+        df.at[index, 'classification'] = classification
         # Save the DataFrame back to the same CSV file (or a new one)
         df.to_csv('your_updated_file.csv', index=False)  # Replace 'your_updated_file.csv' with the name you'd like to give to the updated CSV file
 
